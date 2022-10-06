@@ -51,6 +51,8 @@ const Register = () => {
 				setErrMsg("Invalid Entry");
 				return;
 		}
+		console.log(user, pwd);
+		setSuccess(true);
 	}
 
 	return (
@@ -58,8 +60,9 @@ const Register = () => {
 			{success ? (
 				<section>
 					<h1>Success!</h1>
+					<p>You have been registered.</p>
 					<p>
-						<a href="#">Sign In</a>
+						<Link to='/'>Sign In</Link>
 					</p>
 				</section>
 			) : (
@@ -135,7 +138,7 @@ const Register = () => {
 					<p>
 						Already registered?<br />
 						<span className="line">
-							<Link to='/login'>Sign In</Link>
+							<Link to='/'>Sign In</Link>
 						</span>
 					</p>
 				</section>
