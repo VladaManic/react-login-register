@@ -75,7 +75,7 @@ const Register = () => {
 		try {
 			setErrMsg('')
 			setLoading(true)
-			signup(email, pwd)
+			await signup(email, pwd)
 		} catch {
 			setErrMsg("Failed to create an account.");
 		}

@@ -5,6 +5,7 @@ import { useAuth } from '../contexts/AuthContext'
 import Home from './Home';
 
 const Login = () => {
+	const { login } = useAuth()
 	const navigate = useNavigate();
 	const errRef = useRef();
 
@@ -12,6 +13,7 @@ const Login = () => {
 	const [pwd, setPwd] = useState('');
 	const [errMsg, setErrMsg] = useState('');
 	const [success, setSuccess] = useState(false);
+	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
 		setErrMsg('');
@@ -19,11 +21,17 @@ const Login = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		console.log(email, pwd);
-		setEmail('');
-		setPwd('');
-		setSuccess(true);
-		//navigate('/home')
+		// console.log(email, pwd);
+		try {
+			setErrMsg('')
+			setLoading(true)
+			await login(email, pwd)
+			setErrMsg("Failed to login.");
+			navigate('/home')
+		} catch {
+			setErrMsg("Failed to login.");
+		}
+		setLoading(false)
 	}
 
 	return (
