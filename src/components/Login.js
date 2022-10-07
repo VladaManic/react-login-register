@@ -1,5 +1,6 @@
 import { React, useRef, useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext'
 
 import Home from './Home';
 
@@ -7,19 +8,19 @@ const Login = () => {
 	const navigate = useNavigate();
 	const errRef = useRef();
 
-	const [user, setUser] = useState('');
+	const [email, setEmail] = useState('');
 	const [pwd, setPwd] = useState('');
 	const [errMsg, setErrMsg] = useState('');
 	const [success, setSuccess] = useState(false);
 
 	useEffect(() => {
 		setErrMsg('');
-	}, [user, pwd])
+	}, [email, pwd])
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		console.log(user, pwd);
-		setUser('');
+		console.log(email, pwd);
+		setEmail('');
 		setPwd('');
 		setSuccess(true);
 		//navigate('/home')
@@ -38,15 +39,15 @@ const Login = () => {
 					<form onSubmit={handleSubmit}>
 						<div>
 							<label htmlFor="username">
-								Username:
-							</label>
+								Email:
+							</label><br />
 							<input
-								type="text"
-								id="username"
+								type="email"
+								id="email"
 								//ref={userRef}
 								autoComplete="off"
-								onChange={(e) => setUser(e.target.value)}
-								value={user}
+								onChange={(e) => setEmail(e.target.value)}
+								value={email}
 								required
 							/>
 						</div>
