@@ -1,20 +1,25 @@
 import { React, useRef, useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
+//import axios from 'axios';
+//import axios from '../api/axios';
+import { useAuth } from '../contexts/AuthContext'
 import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-//import axios from 'axios';
-import axios from '../api/axios';
 
-const REGISTER_URL = '/';
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
+const EMAIL_REGEX = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
 const Register = () => {
+	const { signup } = useAuth()
 	//const userRef = useRef();
 	const errRef = useRef();
 
 	const [user, setUser] = useState('');
 	const [validName, setValidName] = useState(false);
+
+	const [email, setEmail] = useState('');
+	const [validEmail, setValidEmail] = useState(false);
 
 	const [pwd, setPwd] = useState('');
 	const [validPwd, setValidPwd] = useState(false);
@@ -24,6 +29,7 @@ const Register = () => {
 
 	const [errMsg, setErrMsg] = useState('');
 	const [success, setSuccess] = useState(false);
+	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
 		const result = USER_REGEX.test(user);
@@ -31,6 +37,13 @@ const Register = () => {
 		console.log(user);
 		setValidName(result);
 	}, [user])
+
+	useEffect(() => {
+		const result = EMAIL_REGEX.test(email);
+		console.log(result);
+		console.log(email);
+		setValidEmail(result);
+	}, [email])
 
 	useEffect(() => {
 		const result = PWD_REGEX.test(pwd);
@@ -49,47 +62,60 @@ const Register = () => {
 		e.preventDefault();
 		// if button enabled with JS hack
 		const v1 = USER_REGEX.test(user);
-		const v2 = PWD_REGEX.test(pwd);
-		if (!v1 || !v2) {
-				setErrMsg("Invalid Entry");
-				return;
+		const v2 = EMAIL_REGEX.test(email);
+		const v3 = PWD_REGEX.test(pwd);
+		if (!v1 || !v2 || !v3) {
+			setErrMsg("Invalid Entry");
+			return;
 		}
-		const currentUser = {
-			username: user,
-			password: pwd
-		} 
+		if(pwd !== matchPwd){
+			setErrMsg("Passwords do not match");
+			return;
+		}
+		try {
+			setErrMsg('')
+			setLoading(true)
+			signup(email, pwd)
+		} catch {
+			setErrMsg("Failed to create an account.");
+		}
+		setLoading(false)
+		// setSuccess(true);
+		// const currentUser = {
+		// 	username: user,
+		// 	password: pwd
+		// } 
 		// axios({
 		// 	method: 'POST',
     //   url: 'https://react-login-register-667e6-default-rtdb.firebaseio.com/users.json',
     //   data: currentUser
 		// })
-		try {
-			const response = await axios.post('/users.json',
-					JSON.stringify({ username: user, password: pwd }),
-					// {
-					// 		headers: { 'Content-Type': 'application/json' },
-					// 		withCredentials: true
-					// }
-			);
-			//console.log(response?.data);
-			console.log(JSON.stringify(response))
-			setSuccess(true);
-			//clear state and controlled inputs
-			//need value attrib on inputs for this
-			setUser('');
-			setPwd('');
-			setMatchPwd('');
-		} catch (err) {
-				if (!err?.response) {
-						setErrMsg('No Server Response');
-				} else if (err.response?.status === 409) {
-						setErrMsg('Username Taken');
-				} else {
-						setErrMsg('Registration Failed')
-				}
-		}
-		//setSuccess(true);
-		//axios.post('/users.json', currentUser)
+		// try {
+		// 	const response = await axios.post('/users.json',
+		// 			JSON.stringify({ username: user, password: pwd }),
+		// 			// {
+		// 			// 		headers: { 'Content-Type': 'application/json' },
+		// 			// 		withCredentials: true
+		// 			// }
+		// 	);
+		// 	console.log(response?.data);
+		// 	console.log(JSON.stringify(response))
+		// 	setSuccess(true);
+		// 	//clear state and controlled inputs
+		// 	//need value attrib on inputs for this
+		// 	setUser('');
+		// 	setPwd('');
+		// 	setMatchPwd('');
+		// } catch (err) {
+		// 		if (!err?.response) {
+		// 				setErrMsg('No Server Response');
+		// 		} else if (err.response?.status === 409) {
+		// 				setErrMsg('Username Taken');
+		// 		} else {
+		// 				setErrMsg('Registration Failed')
+		// 		}
+		// }
+		// axios.post('/users.json', currentUser)
 	}
 
 	return (
@@ -127,6 +153,27 @@ const Register = () => {
 								4 to 24 characters.<br />
 								Must begin with a letter.<br />
 								Letters, numbers, underscores, hyphens allowed.
+							</p>
+						</div>
+
+						<div>
+							<label htmlFor="email">
+								Email:
+								<FontAwesomeIcon icon={faCheck} className={validEmail ? "valid" : "hide"} />
+								<FontAwesomeIcon icon={faTimes} className={validEmail || !email ? "hide" : "invalid"} />
+							</label><br />
+							<input
+								type="email"
+								id="email"
+								//ref={userRef}
+								//autoComplete="off"
+								onChange={(e) => setEmail(e.target.value)}
+								value={email}
+								required
+							/>
+							<p id="emailnote" className={email && !validEmail ? "instructions" : "offscreen"}>
+								<FontAwesomeIcon icon={faInfoCircle} />
+								Email must be in correct format.
 							</p>
 						</div>
 
@@ -170,7 +217,7 @@ const Register = () => {
 							</p>
 						</div>
 
-						<button disabled={!validName || !validPwd || !validMatch ? true : false}>Sign Up</button>
+						<button disabled={loading || !validName || !validEmail || !validPwd || !validMatch ? true : false}>Sign Up</button>
 					</form>
 					<p>
 						Already registered?<br />
