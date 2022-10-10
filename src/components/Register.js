@@ -75,9 +75,17 @@ const Register = () => {
 			setErrMsg('')
 			setLoading(true)
 			await signup(email, pwd)
-		} catch {
-			setErrMsg("Failed to create an account.");
-		}
+		} catch (error) {
+			if (error.code == "auth/email-already-in-use") {
+					setErrMsg("The email address is already in use");
+			} else if (error.code == "auth/invalid-email") {
+					setErrMsg("The email address is not valid.");
+			} else if (error.code == "auth/operation-not-allowed") {
+					setErrMsg("Operation not allowed.");
+			} else if (error.code == "auth/weak-password") {
+					setErrMsg("The password is too weak.");
+			}
+    }
 		setLoading(false)
 		// setSuccess(true);
 		// const currentUser = {
