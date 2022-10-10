@@ -66,6 +66,10 @@ button {
   margin-top: 1rem;
 }
 
+.btn-outline-primary {
+    margin-top: 0;
+}
+
 button {
   padding: 0.5rem;
 }

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 //import axios from 'axios';
 //import axios from '../api/axios';
 import { useAuth } from '../contexts/AuthContext'
-import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faTimes, faInfoCircle, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
@@ -21,9 +21,11 @@ const Register = () => {
 	const [validEmail, setValidEmail] = useState(false);
 
 	const [pwd, setPwd] = useState('');
+	const [passwordType, setPasswordType] = useState("password");
 	const [validPwd, setValidPwd] = useState(false);
 
 	const [matchPwd, setMatchPwd] = useState('');
+	const [pwdMatchType, setPwdMatchType] = useState("password");
 	const [validMatch, setValidMatch] = useState(false);
 
 	const [errMsg, setErrMsg] = useState('');
@@ -52,6 +54,26 @@ const Register = () => {
 		const match = pwd === matchPwd;
 		setValidMatch(match);
 	}, [pwd, matchPwd])
+
+	const togglePassword =()=>{
+		if(passwordType==="password")
+		{
+		 	setPasswordType("text")
+		 	return;
+		} else {
+			setPasswordType("password")
+		}
+	}
+
+	const togglePwdMatch =()=>{
+		if(pwdMatchType==="password")
+		{
+		 	setPwdMatchType("text")
+		 	return;
+		} else {
+			setPwdMatchType("password")
+		}
+	}
 
 	useEffect(() => {
 		setErrMsg('');
@@ -192,12 +214,16 @@ const Register = () => {
 								<FontAwesomeIcon icon={faTimes} className={validPwd || !pwd ? "hide" : "invalid"} />
 							</label>
 							<input
-								type="password"
+								type={passwordType}
 								id="password"
 								onChange={(e) => setPwd(e.target.value)}
 								value={pwd}
 								required
 							/>
+							&nbsp;
+							<button className="btn btn-outline-primary" onClick={togglePassword}>
+								{ passwordType==="password"? <FontAwesomeIcon icon={faEye} /> : <FontAwesomeIcon icon={faEyeSlash} /> }
+							</button>
 							<p id="pwdnote" className={pwd && !validPwd ? "instructions" : "offscreen"}>
 								<FontAwesomeIcon icon={faInfoCircle} />
 								8 to 24 characters.<br />
@@ -213,12 +239,16 @@ const Register = () => {
 								<FontAwesomeIcon icon={faTimes} className={validMatch || !matchPwd ? "hide" : "invalid"} />
 							</label>
 							<input
-								type="password"
+								type={pwdMatchType}
 								id="confirm_pwd"
 								onChange={(e) => setMatchPwd(e.target.value)}
 								value={matchPwd}
 								required
 							/>
+							&nbsp;
+							<button className="btn btn-outline-primary" onClick={togglePwdMatch}>
+								{ pwdMatchType==="password"? <FontAwesomeIcon icon={faEye} /> : <FontAwesomeIcon icon={faEyeSlash} /> }
+							</button>
 							<p id="confirmnote" className={matchPwd && !validMatch ? "instructions" : "offscreen"}>
 								<FontAwesomeIcon icon={faInfoCircle} />
 								Must match the first password input field.
