@@ -1,4 +1,4 @@
-import { React, useRef, useState, useEffect } from "react";
+import { React, useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
 //import axios from 'axios';
 //import axios from '../api/axios';
@@ -12,8 +12,7 @@ const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
 const Register = () => {
 	const { signup } = useAuth()
-	//const userRef = useRef();
-	const errRef = useRef();
+	//const errRef = useRef();
 
 	const [user, setUser] = useState('');
 	const [validName, setValidName] = useState(false);
@@ -130,7 +129,7 @@ const Register = () => {
 				</section>
 			) : (
 				<section>
-					<p ref={errRef} className={errMsg ? "errmsg" : "offscreen"}>{errMsg}</p>
+					<p className={errMsg ? "errmsg" : "offscreen"}>{errMsg}</p>
 					<h1>Register</h1>
 					<form onSubmit={handleSubmit}>
 						<div>

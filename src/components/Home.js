@@ -1,15 +1,26 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useAuth } from '../contexts/AuthContext'
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
-	const { currentUser } = useAuth()
+	const { currentUser, logout } = useAuth()
+	const navigate = useNavigate();
 
-	const handleLogout = () => {
+	const [errMsg, setErrMsg] = useState('');
 
+	const handleLogout = async () => {
+		setErrMsg('')
+		try {
+			await logout()
+			navigate('/')
+		} catch {
+			setErrMsg('Failed to logout')
+		}
 	}
 
 	return (
 		<div>
+			<p className={errMsg ? "errmsg" : "offscreen"}>{errMsg}</p>
 			<p>{ currentUser.email }</p>
 			<button onClick={handleLogout}>Log Out</button>
 		</div>
