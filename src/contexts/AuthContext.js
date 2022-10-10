@@ -14,6 +14,14 @@ export function AuthProvider({ children }) {
 	function signup(email, password) {
 		return auth.createUserWithEmailAndPassword(email, password)
 	}
+	useEffect(() => {
+		//Method which goes with method createUserWithEmailAndPassword, so user can be set
+		const unsubscribe = auth.onAuthStateChanged(user => {
+			setCurrentUser(user)
+			setLoading(false)
+		})
+		return unsubscribe
+	}, [])
 
 	function login(email, password) {
     return auth.signInWithEmailAndPassword(email, password)
@@ -22,14 +30,6 @@ export function AuthProvider({ children }) {
 	function logout() {
 		auth.signOut()
 	}
-
-	useEffect(() => {
-		const unsubscribe = auth.onAuthStateChanged(user => {
-			setCurrentUser(user)
-			setLoading(false)
-		})
-		return unsubscribe
-	}, [])
 
 	const value = {
 		currentUser,
