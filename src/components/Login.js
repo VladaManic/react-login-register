@@ -10,7 +10,7 @@ const Login = () => {
 
 	const [email, setEmail] = useState('');
 	const [pwd, setPwd] = useState('');
-	const [passwordType, setPasswordType] = useState("password");
+	const [passwordShown, setPasswordShown] = useState(false);
 	const [errMsg, setErrMsg] = useState('');
 	const [loading, setLoading] = useState(false);
 
@@ -18,13 +18,9 @@ const Login = () => {
 		setErrMsg('');
 	}, [email, pwd])
 
-	const togglePassword = () => {
-		if(passwordType==="password"){
-		 	setPasswordType("text")
-			return;
-		} else {
-			setPasswordType("password")
-		}
+	const togglePassword = (e) => {
+		e.preventDefault();
+		setPasswordShown(!passwordShown);
 	}
 
 	const handleSubmit = async (e) => {
@@ -67,7 +63,7 @@ const Login = () => {
 							Password:
 						</label>
 						<input
-							type={passwordType}
+							type={passwordShown ? "text" : "password"}
 							id="password"
 							onChange={(e) => setPwd(e.target.value)}
 							value={pwd}
@@ -75,7 +71,7 @@ const Login = () => {
 						/>
 						&nbsp;
 						<button className="btn btn-outline-primary" onClick={togglePassword}>
-							{ passwordType==="password"? <FontAwesomeIcon icon={faEye} /> : <FontAwesomeIcon icon={faEyeSlash} /> }
+							{ passwordShown ? <FontAwesomeIcon icon={faEyeSlash} /> : <FontAwesomeIcon icon={faEye} /> }
 						</button>
 					</div>
 					

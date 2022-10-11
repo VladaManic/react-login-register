@@ -55,7 +55,8 @@ const Register = () => {
 		setValidMatch(match);
 	}, [pwd, matchPwd])
 
-	const togglePassword = () => {
+	const togglePassword = (e) => {
+		e.preventDefault();
 		if(passwordType==="password"){
 		 	setPasswordType("text")
 		 	return;
@@ -64,7 +65,8 @@ const Register = () => {
 		}
 	}
 
-	const togglePwdMatch = () => {
+	const togglePwdMatch = (e) => {
+		e.preventDefault();
 		if(pwdMatchType==="password"){
 		 	setPwdMatchType("text")
 		 	return;
