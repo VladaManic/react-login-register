@@ -55,9 +55,8 @@ const Register = () => {
 		setValidMatch(match);
 	}, [pwd, matchPwd])
 
-	const togglePassword =()=>{
-		if(passwordType==="password")
-		{
+	const togglePassword = () => {
+		if(passwordType==="password"){
 		 	setPasswordType("text")
 		 	return;
 		} else {
@@ -65,9 +64,8 @@ const Register = () => {
 		}
 	}
 
-	const togglePwdMatch =()=>{
-		if(pwdMatchType==="password")
-		{
+	const togglePwdMatch = () => {
+		if(pwdMatchType==="password"){
 		 	setPwdMatchType("text")
 		 	return;
 		} else {
@@ -162,7 +160,7 @@ const Register = () => {
 				<section>
 					<p className={errMsg ? "errmsg" : "offscreen"}>{errMsg}</p>
 					<h1>Register</h1>
-					<form onSubmit={handleSubmit}>
+					<form>
 						<div>
 							<label htmlFor="username">
 								Username:
@@ -255,7 +253,7 @@ const Register = () => {
 							</p>
 						</div>
 
-						<button disabled={loading || !validName || !validEmail || !validPwd || !validMatch ? true : false}>Sign Up</button>
+						<button disabled={loading || !validName || !validEmail || !validPwd || !validMatch ? true : false} onSubmit={handleSubmit}>Sign Up</button>
 					</form>
 					<p>
 						Already registered?<br />

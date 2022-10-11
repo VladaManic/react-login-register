@@ -18,18 +18,18 @@ const Login = () => {
 		setErrMsg('');
 	}, [email, pwd])
 
-	const togglePassword =()=>{
-		if(passwordType==="password")
-		{
-		 setPasswordType("text")
-		 return;
+	const togglePassword = () => {
+		if(passwordType==="password"){
+		 	setPasswordType("text")
+			return;
+		} else {
+			setPasswordType("password")
 		}
-		setPasswordType("password")
 	}
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		// console.log(email, pwd);
+		console.log(email, pwd);
 		try {
 			setErrMsg('')
 			setLoading(true)
@@ -79,7 +79,6 @@ const Login = () => {
 						</button>
 					</div>
 					
-
 					<button disabled={loading} onClick={handleSubmit}>Sign In</button>
 				</form>
 				<p>
