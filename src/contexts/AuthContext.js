@@ -11,8 +11,12 @@ export function AuthProvider({ children }) {
 	const [loading, setLoading] = useState(true)
 	const [currentUser, setCurrentUser] = useState()
 
-	function signup(email, password) {
-		return auth.createUserWithEmailAndPassword(email, password)
+	async function signup(email, password, username) {
+		const { user } = await auth.createUserWithEmailAndPassword(email, password)
+		user.updateProfile({
+			displayName: username
+		});
+		
 	}
 	useEffect(() => {
 		//Method which goes with method createUserWithEmailAndPassword, so user can be set

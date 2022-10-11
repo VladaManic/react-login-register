@@ -46,7 +46,7 @@ const Login = () => {
 			<section>
 				<p className={errMsg ? "errmsg" : "offscreen"}>{errMsg}</p>
 				<h1>Log in</h1>
-				<form onSubmit={handleSubmit}>
+				<form>
 					<div>
 						<label htmlFor="username">
 							Email:
@@ -80,7 +80,7 @@ const Login = () => {
 					</div>
 					
 
-					<button disabled={loading}>Sign In</button>
+					<button disabled={loading} onClick={handleSubmit}>Sign In</button>
 				</form>
 				<p>
 					Not registered?<br />

@@ -96,7 +96,7 @@ const Register = () => {
 		try {
 			setErrMsg('')
 			setLoading(true)
-			await signup(email, pwd)
+			await signup(email, pwd, user)
 			setSuccess(true)
 		} catch (error) {
 			if (error.code == "auth/email-already-in-use") {
